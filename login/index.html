@@ -261,7 +261,10 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username: user.value, password: pass.value })
                 });
-                var data = await res.json();
+                var data = {};
+                try { data = await res.json(); } catch (e) {
+                    data = { success: false, message: res.status >= 500 ? 'Server error — please try again shortly.' : 'Unexpected response (HTTP ' + res.status + ').' };
+                }
                 msg.textContent = data.message || 'Something went wrong.';
                 if (data.success) {
                     msg.classList.add('text-green-400', 'bg-green-500/10');
@@ -270,7 +273,7 @@
                     msg.classList.add('text-red-400', 'bg-red-500/10');
                 }
             } catch (err) {
-                msg.textContent = 'Network error — please try again.';
+                msg.textContent = 'Network error — check your connection and try again.';
                 msg.classList.add('text-red-400', 'bg-red-500/10');
             } finally {
                 btn.disabled = false;

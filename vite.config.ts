@@ -10,6 +10,7 @@ export default defineConfig({
       input: {
         main: "index.html",
         login: "login/index.html",
+        securityKey: "login/securityKey.html",
         register: "register/index.html",
         forgot: "forgot/index.html",
         terms: "terms/index.html",

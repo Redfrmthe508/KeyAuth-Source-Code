@@ -1600,12 +1600,16 @@
         window.onload = function () {
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
-                const json = JSON.parse(this.responseText);
-                document.getElementById("accs").textContent = json.accounts;
-                document.getElementById("apps").textContent = json.applications;
-                document.getElementById("licenses").textContent = json.licenses;
-                document.getElementById("activeUsers").textContent = json.activeUsers;
+                let json = null;
+                try { json = JSON.parse(this.responseText); } catch (e) { return; }
+                if (!json || typeof json !== "object") return;
+                const set = function (id, val) { const el = document.getElementById(id); if (el && val !== undefined) el.textContent = val; };
+                set("accs", json.accounts);
+                set("apps", json.applications);
+                set("licenses", json.licenses);
+                set("activeUsers", json.activeUsers);
             }
+            xhttp.onerror = function () { /* stats unavailable */ };
             xhttp.open("GET", "./stats.php");
             xhttp.send();
         }

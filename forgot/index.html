@@ -6,15 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="title" content="KeyAuth - Register">
+    <meta name="title" content="KeyAuth - Reset Password">
     <meta content="Secure your software against piracy, an issue causing $422 million in losses annually - Fair pricing & Features not seen in competitors" name="description" />
     <meta content="KeyAuth" name="author" />
-    <meta name="keywords" content="KeyAuth, Cloud Authentication, Key Authentication, Authentication, API authentication, Security, Licensing" />
-    <meta property="og:title" content="KeyAuth - Register" />
-    <meta property="og:type" content="website" />
     <link rel="shortcut icon" type="image/jpg" href="https://cdn.keyauth.cc/front/assets/img/favicon.png">
 
-    <title>KeyAuth - Register</title>
+    <title>KeyAuth - Reset Password</title>
 
     <link rel="stylesheet" href="https://cdn.keyauth.cc/v3/scripts/animate.min.css" />
     <link rel="stylesheet" href="https://cdn.keyauth.cc/v3/dist/output.css">
@@ -48,7 +45,7 @@
             background: linear-gradient(160deg, rgba(23, 23, 33, 0.92), rgba(15, 15, 23, 0.88));
             border: 1px solid rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(8px);
-            transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+            transition: border-color .35s ease, box-shadow .35s ease;
         }
         .glass-card:hover {
             border-color: rgba(30, 150, 252, 0.45);
@@ -123,85 +120,41 @@
     </header>
 
     <section>
-        <div class="relative flex flex-wrap md:-m-8 ml-8 md:ml-24">
-            <div class="w-full md:w-1/2 md:p-8">
-                <div class="md:max-w-lg md:mx-auto md:pt-36">
-                    <h2 class="mb-7 md:mb-12 text-3xl md:text-6xl font-bold font-heading tracking-px-n leading-tight text-center">
-                        Welcome to <span class="shimmer-text">KeyAuth</span>!
-                    </h2>
-                    <h3 class="mb-9 text-sm md:text-xl font-bold font-heading leading-normal text-center">
-                        The best authentication platform for your software.
-                    </h3>
-                </div>
+        <div class="relative z-10 flex flex-col items-center px-4">
+            <div class="md:max-w-lg w-full md:pt-16 text-center">
+                <h2 class="mb-4 text-3xl md:text-5xl font-bold font-heading tracking-px-n leading-tight">
+                    Reset your <span class="shimmer-text inline-block">password</span> 🔑
+                </h2>
+                <h3 class="mb-9 text-sm md:text-lg font-bold font-heading leading-normal text-gray-400">
+                    Enter your account email and we'll send you a link to set a new password.
+                </h3>
             </div>
-            <div class="w-full md:w-1/2 md:p-8 -ml-4 md:-ml-0">
-                <div class="p-4 py-16 flex flex-col justify-center h-full md:-ml-32">
-                    <form id="registerForm" class="glass-card md:max-w-lg md:ml-48 space-y-4 md:space-y-6 p-8 rounded-2xl" method="post" action="index.php">
-                        <div class="relative mb-4">
-                            <input type="text" id="username" name="username" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border border-gray-600 appearance-none focus:ring-0 peer" placeholder=" " autocomplete="on" required>
-                            <label for="username" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Username</label>
-                        </div>
-                        <div class="relative mb-4">
-                            <input type="email" id="email" name="email" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border border-gray-600 appearance-none focus:ring-0 peer" placeholder=" " autocomplete="on" required>
-                            <label for="email" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
-                        </div>
 
-                        <div class="relative mb-4">
-                            <input type="password" id="password" name="password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border border-gray-600 appearance-none focus:ring-0 peer" placeholder=" " autocomplete="on" required>
-                            <label for="password" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>
-                        </div>
+            <div class="glass-card md:max-w-md w-full p-8 rounded-2xl">
+                <form id="resetForm" class="space-y-6" novalidate>
+                    <div class="relative mb-4">
+                        <input type="email" id="email" name="email" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border border-gray-600 appearance-none focus:ring-0 peer" placeholder=" " autocomplete="on" required>
+                        <label for="email" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
+                    </div>
 
-                        <div class="relative mb-4">
-                            <input type="password" id="confirmpassword" name="confirmpassword" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border border-gray-600 appearance-none focus:ring-0 peer" placeholder=" " autocomplete="on" required>
-                            <label for="confirmpassword" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Confirm Password</label>
-                        </div>
+                    <button type="submit" class="btn-glow text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 focus:ring-0 focus:outline-none transition duration-200 font-semibold rounded-xl text-sm px-5 py-3 text-center items-center w-full">
+                        <span class="inline-flex">
+                            Send Reset Link
+                            <svg class="w-3.5 h-3.5 ml-2 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"></path>
+                            </svg>
+                        </span>
+                    </button>
 
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-sm font-medium text-white">I Agree To:</span>
-                            </div>
-                            <ul class="items-center w-full text-sm font-medium rounded-lg sm:flex bg-[#0f0f17] border border-white/5 text-white">
-                                <li class="w-full border-b border-gray-700 sm:border-b-0 sm:border-r">
-                                    <div class="flex items-center pl-3">
-                                        <input name="wontshareCB" id="wontshareCB" type="checkbox" value="" class="w-4 h-4 rounded focus:ring-blue-600 ring-offset-gray-700 focus:ring-offset-gray-700 focus:ring-0 bg-[#09090d] border-[#09090d]">
-                                        <label for="wontshareCB" class="w-full py-3 ml-2 text-sm font-medium text-gray-300">Not share my account</label>
-                                    </div>
-                                </li>
-                                <li class="w-full border-b border-gray-700 sm:border-b-0 sm:border-r">
-                                    <div class="flex items-center pl-3">
-                                        <input name="wontdisputeCB" id="wontdisputeCB" type="checkbox" value="" class="w-4 h-4 rounded focus:ring-blue-600 ring-offset-gray-700 focus:ring-offset-gray-700 focus:ring-0 bg-[#09090d] border-[#09090d]">
-                                        <label for="wontdisputeCB" class="w-full py-3 ml-2 text-sm font-medium text-gray-300">Not make any disputes (contact support)</label>
-                                    </div>
-                                </li>
-                                <li class="w-full border-b border-gray-700 sm:border-b-0">
-                                    <div class="flex items-center pl-3">
-                                        <input name="tosCB" id="tosCB" type="checkbox" value="" class="w-4 h-4 rounded focus:ring-blue-600 ring-offset-gray-700 focus:ring-offset-gray-700 focus:ring-0 bg-[#09090d] border-[#09090d]">
-                                        <label for="tosCB" class="w-full py-3 ml-2 text-sm font-medium text-gray-300">Follow
-                                            <a href="../terms" target="_blank" class="text-blue-500 hover:underline">Terms and Conditions</a></label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                    <p id="resetMessage" class="hidden text-sm text-green-400 text-center font-medium"></p>
+                </form>
 
-                        <button name="register" class="btn-glow text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 focus:ring-0 focus:outline-none transition duration-200 font-semibold rounded-xl text-sm px-5 py-3 text-center items-center mb-3 w-full mt-6">
-                            <span class="inline-flex">
-                                Register Now
-                                <svg class="w-3.5 h-3.5 ml-2 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"></path>
-                                </svg>
-                            </span>
-                        </button>
+                <div class="text-sm font-medium text-white mt-6">
+                    Remembered it? <a href="../login/" class="hover:underline text-blue-500">Login</a>
+                </div>
 
-                        <p id="registerMessage" class="hidden text-sm text-center font-medium rounded-lg p-3"></p>
-
-                        <div class="text-sm font-medium text-white mb-4">
-                            Need a good password manager? Use <a href="https://bitwarden.com/" target="_blank" class="hover:underline text-blue-500">Bitwarden</a> it's free!
-                        </div>
-
-                        <div class="text-sm font-medium text-white">
-                            Have an Account? <a href="../login" class="hover:underline text-blue-500">Login</a>
-                        </div>
-                    </form>
+                <div class="text-sm font-medium text-white">
+                    Need an Account? <a href="../register/" class="hover:underline text-blue-500">Register</a>
                 </div>
             </div>
         </div>
@@ -272,54 +225,30 @@
 
     <script src="https://cdn.keyauth.cc/v3/dist/flowbite.js"></script>
     <script>
-        document.getElementById('registerForm').addEventListener('submit', async function (e) {
+        document.getElementById('resetForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            var msg = document.getElementById('registerMessage');
-            var btn = this.querySelector('button[name="register"]');
-            var user = document.getElementById('username');
             var email = document.getElementById('email');
-            var pass = document.getElementById('password');
-            var confirm = document.getElementById('confirmpassword');
-            var tos = document.getElementById('tosCB');
-            msg.classList.remove('hidden', 'text-green-400', 'bg-green-500/10', 'text-red-400', 'bg-red-500/10');
-            if (user.value.trim().length < 3 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value)) {
-                msg.textContent = 'Enter a valid username (3+ chars) and email.';
-                msg.classList.add('text-red-400', 'bg-red-500/10');
+            var msg = document.getElementById('resetMessage');
+            if (!email.value || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value)) {
+                email.classList.add('border-red-500');
                 return;
             }
-            if (pass.value.length < 12 || pass.value !== confirm.value) {
-                msg.textContent = 'Password must be at least 12 characters and both fields must match.';
-                msg.classList.add('text-red-400', 'bg-red-500/10');
-                return;
-            }
-            if (!tos.checked) {
-                msg.textContent = 'You must agree to the Terms and Conditions.';
-                msg.classList.add('text-red-400', 'bg-red-500/10');
-                return;
-            }
-            btn.disabled = true;
+            email.classList.remove('border-red-500');
             try {
-                var res = await fetch('/api/register', {
+                var res = await fetch('/api/forgot', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: user.value, email: email.value, password: pass.value })
+                    body: JSON.stringify({ email: email.value })
                 });
                 var data = {};
                 try { data = await res.json(); } catch (e) {
                     data = { success: false, message: res.status >= 500 ? 'Server error — please try again shortly.' : 'Unexpected response (HTTP ' + res.status + ').' };
                 }
-                msg.textContent = data.message || 'Something went wrong.';
-                if (data.success) {
-                    msg.classList.add('text-green-400', 'bg-green-500/10');
-                    setTimeout(function () { window.location.href = '/login/'; }, 900);
-                } else {
-                    msg.classList.add('text-red-400', 'bg-red-500/10');
-                }
+                msg.textContent = data.message || 'Check your inbox.';
+                msg.classList.remove('hidden');
             } catch (err) {
-                msg.textContent = 'Network error — please try again.';
-                msg.classList.add('text-red-400', 'bg-red-500/10');
-            } finally {
-                btn.disabled = false;
+                msg.textContent = 'Network error — check your connection and try again.';
+                msg.classList.remove('hidden');
             }
         });
     </script>
