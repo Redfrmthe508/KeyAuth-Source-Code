@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#09090d] text-white overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="title" content="KeyAuth - Login">
+    <meta content="Secure your software against piracy, an issue causing $422 million in losses annually - Fair pricing & Features not seen in competitors" name="description" />
+    <meta content="KeyAuth" name="author" />
+    <meta name="keywords" content="KeyAuth, Cloud Authentication, Key Authentication, Authentication, API authentication, Security, Licensing" />
+    <meta property="og:title" content="KeyAuth - Login" />
+    <meta property="og:type" content="website" />
+    <link rel="shortcut icon" type="image/jpg" href="https://cdn.keyauth.cc/front/assets/img/favicon.png">
+
+    <title>KeyAuth - Login</title>
+
+    <link rel="stylesheet" href="https://cdn.keyauth.cc/v3/scripts/animate.min.css" />
+    <link rel="stylesheet" href="https://cdn.keyauth.cc/v3/dist/output.css">
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(110px);
+            opacity: 0.35;
+            pointer-events: none;
+            animation: orb-float 12s ease-in-out infinite;
+        }
+        @keyframes orb-float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -40px) scale(1.15); }
+        }
+
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+        }
+
+        .glass-card {
+            background: linear-gradient(160deg, rgba(23, 23, 33, 0.92), rgba(15, 15, 23, 0.88));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(30, 150, 252, 0.45);
+            box-shadow: 0 18px 45px -18px rgba(30, 150, 252, 0.35);
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #1e96fc, #36e2dd, #1e96fc);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        .btn-glow {
+            box-shadow: 0 0 0 0 rgba(30, 150, 252, 0.5);
+            transition: all .3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 28px 2px rgba(30, 150, 252, 0.45);
+            transform: translateY(-2px);
+        }
+
+        input:focus {
+            border-color: rgba(30, 150, 252, 0.6) !important;
+        }
+
+        ::selection { background: rgba(30, 150, 252, 0.35); color: #fff; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #09090d; }
+        ::-webkit-scrollbar-thumb { background: #1f1f2b; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1e96fc; }
+    </style>
+</head>
+
+<body>
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="glow-orb w-[500px] h-[500px] bg-blue-600/40 -top-40 -left-40"></div>
+        <div class="glow-orb w-[400px] h-[400px] bg-cyan-500/25 top-1/3 -right-40" style="animation-delay: -6s"></div>
+        <div class="grid-bg absolute inset-0"></div>
+    </div>
+
+    <header>
+        <nav class="border-gray-200 px-4 lg:px-6 py-2.5 mb-14">
+            <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+                <a href="../" class="flex items-center">
+                    <img src="https://cdn.keyauth.cc/v2/assets/media/logos/logo-1-dark.png" class="mr-3 h-12 mt-2" alt="KeyAuth Logo" />
+                </a>
+                <div class="flex items-center lg:order-2">
+                    <a href="../login" class="text-white focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 hover:opacity-60 transition duration-200 focus:outline-none focus:ring-gray-800">
+                        Client Area
+                    </a>
+                    <a href="../register" class="btn-glow text-white focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 focus:outline-none focus:ring-blue-800 transition duration-200">
+                        Onboard Now
+                    </a>
+                </div>
+                <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mmenu">
+                    <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                        <li><a href="../" class="block py-2 pr-4 pl-3 lg:border-0 lg:p-0 text-gray-400 hover:text-white transition duration-200" aria-current="page">Home</a></li>
+                        <li><a href="../#features" class="block py-2 pr-4 pl-3 lg:border-0 lg:p-0 text-gray-400 hover:text-white transition duration-200">Features</a></li>
+                        <li><a href="../#plans" class="block py-2 pr-4 pl-3 lg:border-0 lg:p-0 text-gray-400 hover:text-white transition duration-200">Plans</a></li>
+                        <li><a href="../#team" class="block py-2 pr-4 pl-3 lg:border-0 lg:p-0 text-gray-400 hover:text-white transition duration-200">Our Team</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section>
+        <div class="relative z-10 flex flex-wrap md:-m-8 ml-8 md:ml-24">
+            <div class="w-full md:w-1/2 md:p-8">
+                <div class="md:max-w-lg md:mx-auto md:pt-36">
+                    <h2 class="mb-7 md:mb-12 text-3xl md:text-6xl font-bold font-heading tracking-px-n leading-tight text-center">
+                        Welcome back to <span class="shimmer-text inline-block">KeyAuth</span> 👋
+                    </h2>
+                    <h3 class="mb-9 text-sm md:text-xl font-bold font-heading leading-normal text-center">
+                        The best authentication platform for your software.
+                    </h3>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 md:p-8 -ml-4 md:-ml-12">
+                <div class="p-4 py-16 flex flex-col justify-center h-full">
+                    <form id="loginForm" class="glass-card md:max-w-md md:ml-32 space-y-4 md:space-y-6 p-8 rounded-2xl" method="post" action="index.php">
+                        <div class="relative mb-4" data-username="1">
+                            <input type="text" id="username" name="username" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border border-gray-600 appearance-none focus:ring-0 peer" placeholder=" " autocomplete="on" required>
+                            <label for="username" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Username</label>
+                        </div>
+
+                        <div class="relative mb-4" data-password="1">
+                            <input type="password" id="password" name="password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border border-gray-600 appearance-none focus:ring-0 peer" placeholder=" " autocomplete="on" required>
+                            <label for="password" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>
+                        </div>
+
+                        <div class="relative mb-4" data-twofactor="1">
+                            <input type="text" id="keyauthtwofactor" name="keyauthtwofactor" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent rounded-lg border border-gray-600 appearance-none focus:ring-0 peer" placeholder=" " autocomplete="on">
+                            <label for="keyauthtwofactor" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">2FA
+                                <span class="text-xs">(Two Factor Authentication)</span></label>
+                        </div>
+
+                        <button name="login" data-loginbutton="1" class="btn-glow text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 focus:ring-0 focus:outline-none transition duration-200 font-semibold rounded-xl text-sm px-5 py-3 text-center items-center mb-3 w-full mt-6">
+                            <span class="inline-flex">
+                                Login Now
+                                <svg class="w-3.5 h-3.5 ml-2 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"></path>
+                                </svg>
+                            </span>
+                        </button>
+
+                        <p id="loginMessage" class="hidden text-sm text-center font-medium rounded-lg p-3"></p>
+
+                        <div class="text-sm font-medium text-white mb-4">
+                            Forgot your password? <a href="../forgot/" class="hover:underline text-blue-500">Reset It</a> Now!
+                        </div>
+
+                        <div class="text-sm font-medium text-white">
+                            Need an Account? <a href="../register/" class="hover:underline text-blue-500">Register</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="mt-32">
+        <div class="p-4 py-6 mx-auto max-w-screen-xl md:p-8 pt-32 md:pt-0">
+            <div class="grid grid-cols-2 gap-8 lg:grid-cols-6">
+                <div class="col-span-2">
+                    <a href="../" class="flex items-center mb-2 text-2xl font-semibold text-white lg:mb-0">
+                        KeyAuth LLC
+                    </a>
+                    <p class="my-4 font-light text-gray-400">
+                        KeyAuth is a game-changing, affordable and easy to use licensing solution for your software.
+                    </p>
+                    <ul class="flex mt-5 space-x-6">
+                        <li>
+                            <a target="_blank" href="https://youtube.com/keyauth" class="hover:text-white text-gray-400">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21.593 7.203a2.506 2.506 0 0 0-1.762-1.766c-1.566-.43-7.83-.437-7.83-.437s-6.265-.007-7.832.404a2.56 2.56 0 0 0-1.766 1.778c-.413 1.566-.417 4.814-.417 4.814s-.004 3.264.406 4.814c.23.857.905 1.534 1.763 1.765 1.582.43 7.83.437 7.83.437s6.265.007 7.831-.403a2.515 2.515 0 0 0 1.767-1.763c.414-1.565.417-4.812.417-4.812s.02-3.265-.407-4.831ZM9.996 15.005l.005-6 5.207 3.005-5.212 2.995Z"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://github.com/KeyAuth/" class="hover:text-white text-gray-400">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M12.026 2a9.973 9.973 0 0 0-9.974 9.974c0 4.406 2.857 8.145 6.82 9.465.5.09.68-.217.68-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.09-.645.35-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.555 9.555 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2Z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://twitter.com/KeyAuth" class="hover:text-white text-gray-400">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19.633 7.994c.013.175.013.349.013.523 0 5.325-4.053 11.46-11.46 11.46A11.38 11.38 0 0 1 2 18.169c.324.037.636.05.973.05a8.07 8.07 0 0 0 5.001-1.721 4.036 4.036 0 0 1-3.767-2.793c.249.037.499.062.761.062.361 0 .724-.05 1.061-.137a4.027 4.027 0 0 1-3.23-3.953v-.05a4.05 4.05 0 0 0 1.82.51 4.022 4.022 0 0 1-1.796-3.353c0-.748.199-1.434.548-2.032a11.457 11.457 0 0 0 8.306 4.215c-.062-.3-.1-.611-.1-.923a4.024 4.024 0 0 1 4.028-4.028c1.16 0 2.207.486 2.943 1.272a7.957 7.957 0 0 0 2.556-.973c-.3.93-.93 1.72-1.771 2.22a8.074 8.074 0 0 0 2.319-.624 8.646 8.646 0 0 1-2.019 2.083Z"></path>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="lg:mx-auto">
+                    <h3 class="mb-6 text-sm font-semibold uppercase text-white">Links</h3>
+                    <ul class="text-gray-400">
+                        <li class="mb-4"><a href="https://www.youtube.com/keyauth" target="_blank" class="hover:underline">Youtube</a></li>
+                        <li class="mb-4"><a href="https://github.com/keyauth" target="_blank" class="hover:underline">GitHub</a></li>
+                        <li class="mb-4"><a href="https://keyauth.readme.io" target="_blank" class="hover:underline">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="lg:mx-auto">
+                    <h2 class="mb-6 text-sm font-semibold uppercase text-white">Other &amp; Support</h2>
+                    <ul class="text-gray-400">
+                        <li class="mb-4"><a target="_blank" href="https://keyauth.tawk.help" class="hover:underline">Support Center</a></li>
+                        <li class="mb-4"><a target="_blank" href="https://t.me/keyauth" class="hover:underline">Telegram</a></li>
+                    </ul>
+                </div>
+                <div class="lg:mx-auto">
+                    <h2 class="mb-6 text-sm font-semibold uppercase text-white">Legal</h2>
+                    <ul class="text-gray-400">
+                        <li class="mb-4"><a target="_blank" href="../terms" class="hover:underline">Terms of Service</a></li>
+                        <li class="mb-4"><a target="_blank" href="../terms#privacy" class="hover:underline">Privacy Policy</a></li>
+                        <li class="mb-4"><a target="_blank" href="../gdpr" class="hover:underline">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-6 border-[#0f0f17] sm:mx-auto lg:my-8">
+            <span class="block mb-6 text-sm text-gray-400 lg:mb-0 text-center">© 2020 - <script>document.write(new Date().getFullYear())</script> <a href="../" class="hover:underline">KeyAuth LLC</a>. All Rights Reserved.</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.keyauth.cc/v3/dist/flowbite.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            var msg = document.getElementById('loginMessage');
+            var btn = this.querySelector('button[name="login"]');
+            var user = document.getElementById('username');
+            var pass = document.getElementById('password');
+            msg.classList.remove('hidden', 'text-green-400', 'bg-green-500/10', 'text-red-400', 'bg-red-500/10');
+            if (!user.value.trim() || !pass.value) {
+                msg.textContent = 'Please fill in your username and password.';
+                msg.classList.add('text-red-400', 'bg-red-500/10');
+                return;
+            }
+            btn.disabled = true;
+            try {
+                var res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user.value, password: pass.value })
+                });
+                var data = await res.json();
+                msg.textContent = data.message || 'Something went wrong.';
+                if (data.success) {
+                    msg.classList.add('text-green-400', 'bg-green-500/10');
+                    setTimeout(function () { window.location.href = '/app/'; }, 700);
+                } else {
+                    msg.classList.add('text-red-400', 'bg-red-500/10');
+                }
+            } catch (err) {
+                msg.textContent = 'Network error — please try again.';
+                msg.classList.add('text-red-400', 'bg-red-500/10');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

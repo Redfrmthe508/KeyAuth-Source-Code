@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#09090d] text-white overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyAuth - Dashboard (Preview)</title>
+    <link rel="shortcut icon" type="image/jpg" href="https://cdn.keyauth.cc/front/assets/img/favicon.png">
+    <link rel="stylesheet" href="https://cdn.keyauth.cc/v3/dist/output.css">
+
+    <style>
+        .glow-orb {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(110px);
+            opacity: 0.35;
+            pointer-events: none;
+            animation: orb-float 12s ease-in-out infinite;
+        }
+        @keyframes orb-float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -40px) scale(1.15); }
+        }
+        .glass-card {
+            background: linear-gradient(160deg, rgba(23, 23, 33, 0.92), rgba(15, 15, 23, 0.88));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            transition: border-color .35s ease, box-shadow .35s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(30, 150, 252, 0.45);
+            box-shadow: 0 18px 45px -18px rgba(30, 150, 252, 0.35);
+        }
+        .shimmer-text {
+            background: linear-gradient(90deg, #1e96fc, #36e2dd, #1e96fc);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+        .btn-glow {
+            box-shadow: 0 0 0 0 rgba(30, 150, 252, 0.5);
+            transition: all .3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 28px 2px rgba(30, 150, 252, 0.45);
+            transform: translateY(-2px);
+        }
+        ::selection { background: rgba(30, 150, 252, 0.35); color: #fff; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #09090d; }
+        ::-webkit-scrollbar-thumb { background: #1f1f2b; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1e96fc; }
+    </style>
+</head>
+
+<body>
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="glow-orb w-[500px] h-[500px] bg-blue-600/40 -top-40 -left-40"></div>
+        <div class="glow-orb w-[400px] h-[400px] bg-cyan-500/25 top-1/3 -right-40" style="animation-delay: -6s"></div>
+    </div>
+
+    <nav class="border-b border-white/5 px-4 lg:px-6 py-3">
+        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+            <a href="/" class="flex items-center">
+                <img src="https://cdn.keyauth.cc/v2/assets/media/logos/logo-1-dark.png" class="mr-3 h-10" alt="KeyAuth Logo" />
+                <span class="text-sm text-gray-400 hidden sm:inline">Preview Dashboard</span>
+            </a>
+            <button id="logoutBtn"
+                class="btn-glow text-white font-medium rounded-lg text-sm px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 transition duration-200">
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-screen-xl px-4 py-10 mx-auto lg:px-6">
+        <h1 class="mb-2 text-3xl font-extrabold tracking-tight md:text-4xl">
+            Welcome back, <span id="username" class="shimmer-text">…</span> 👋
+        </h1>
+        <p class="mb-10 text-gray-400">
+            You're signed in. This preview dashboard is backed by a live demo auth API (JSON store + hashed
+            passwords). On a real PHP + MySQL host, the original KeyAuth dashboard takes over automatically.
+        </p>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-10">
+            <div class="glass-card rounded-2xl p-6">
+                <div class="text-sm font-medium text-gray-400 mb-2">Session</div>
+                <div class="text-2xl font-bold">Active ✓</div>
+                <div class="mt-1 text-sm text-gray-500">Cookie <code class="text-blue-400">ka_session</code></div>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="text-sm font-medium text-gray-400 mb-2">Password storage</div>
+                <div class="text-2xl font-bold">scrypt</div>
+                <div class="mt-1 text-sm text-gray-500">salted, never plain-text</div>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <div class="text-sm font-medium text-gray-400 mb-2">Mode</div>
+                <div class="text-2xl font-bold">Demo</div>
+                <div class="mt-1 text-sm text-gray-500">swap in PHP host for full features</div>
+            </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 text-center">
+            <h2 class="mb-3 text-2xl font-bold">Authentication works end-to-end 🎉</h2>
+            <p class="text-gray-400 max-w-xl mx-auto">
+                Register an account on <a href="/register/" class="text-blue-500 hover:underline">/register/</a>,
+                log in on <a href="/login/" class="text-blue-500 hover:underline">/login/</a>, and you land here with
+                a real session. Try <a href="/forgot/" class="text-blue-500 hover:underline">/forgot/</a> too.
+            </p>
+        </div>
+    </main>
+
+    <script>
+        fetch('/api/me')
+            .then(function (r) { if (!r.ok) throw new Error('unauthed'); return r.json(); })
+            .then(function (data) {
+                document.getElementById('username').textContent = data.username;
+            })
+            .catch(function () { window.location.href = '/login/'; });
+
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            fetch('/api/logout', { method: 'POST' }).finally(function () {
+                window.location.href = '/login/';
+            });
+        });
+    </script>
+
+    <div id="react-dash-root"></div>
+    <script type="module" src="/src/react/dashboard.tsx"></script>
+</body>
+
+</html>

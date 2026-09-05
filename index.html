@@ -50,9 +50,86 @@
     <link rel="stylesheet" href="https://cdn.keyauth.cc/v3/dist/output.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.keyauth.cc/v3/scripts/animate.min.css" />
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        /* Animated background glow orbs */
+        .glow-orb {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(110px);
+            opacity: 0.35;
+            pointer-events: none;
+            animation: orb-float 12s ease-in-out infinite;
+        }
+        @keyframes orb-float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -40px) scale(1.15); }
+        }
+
+        /* Subtle grid backdrop */
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+        }
+
+        /* Glass cards */
+        .glass-card {
+            background: linear-gradient(160deg, rgba(23, 23, 33, 0.92), rgba(15, 15, 23, 0.88));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(30, 150, 252, 0.45);
+            box-shadow: 0 18px 45px -18px rgba(30, 150, 252, 0.35);
+        }
+
+        /* Gradient shimmer text */
+        .shimmer-text {
+            background: linear-gradient(90deg, #1e96fc, #36e2dd, #1e96fc);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        /* Glowing primary button */
+        .btn-glow {
+            box-shadow: 0 0 0 0 rgba(30, 150, 252, 0.5);
+            transition: all .3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 28px 2px rgba(30, 150, 252, 0.45);
+            transform: translateY(-2px);
+        }
+
+        ::selection { background: rgba(30, 150, 252, 0.35); color: #fff; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #09090d; }
+        ::-webkit-scrollbar-thumb { background: #1f1f2b; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1e96fc; }
+    </style>
 </head>
 
 <body>
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="glow-orb w-[500px] h-[500px] bg-blue-600/40 -top-40 -left-40"></div>
+        <div class="glow-orb w-[400px] h-[400px] bg-cyan-500/25 top-1/3 -right-40" style="animation-delay: -6s"></div>
+        <div class="grid-bg absolute inset-0"></div>
+    </div>
     <header>
         <nav class="border-gray-200 px-4 lg:px-6 py-2.5 mb-14">
             <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
@@ -66,7 +143,7 @@
                         Client Area
                     </a>
                     <a href="./register"
-                        class="text-white focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 bg-blue-600 hover:opacity-80 focus:outline-none focus:ring-blue-800 transition duration-200">
+                        class="btn-glow text-white focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 focus:outline-none focus:ring-blue-800 transition duration-200">
                         Onboard Now
                     </a>
                     <button data-collapse-toggle="mmenu" type="button"
@@ -268,7 +345,7 @@
                         <li>
                             <a href="#team"
                                 class="block py-2 pr-4 pl-3 border-b lg:hover:bg-transparent lg:border-0 lg:p-0 text-gray-400 hover:bg-gray-700 hover:text-white lg:hover:bg-transparent border-gray-700 transition duration-200">
-                                Our Team
+                                Our <span class="shimmer-text">Team</span>
                             </a>
                         </li>
                     </ul>
@@ -296,15 +373,15 @@
                         </svg>
                     </a>
                     <h1
-                        class="mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl text-white animate-on-scroll">
-                        Unleashing the Ultimate Power of Authentication
+                        class="mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-6xl text-white animate-on-scroll">
+                        <span class="shimmer-text">Unleashing the Ultimate</span><br />Power of Authentication
                     </h1>
                     <p
                         class="max-w-xl mx-auto mb-6 font-base lg:mx-0 xl:mb-8 md:text-lg xl:text-xl text-gray-400 animate-on-scroll-right">
                         KeyAuth Seamlessly Blends Cloud-Powered Subscription Hosting with an Open-Source Foundation.
                     </p>
                     <a href="./register/" target="_blank"
-                        class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-0 focus:ring-blue-900 transition duration-200 animate-on-scroll">
+                        class="btn-glow inline-flex items-center justify-center px-6 py-3 mr-3 text-base font-semibold text-center text-white rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 focus:ring-0 focus:ring-blue-900 transition duration-200 animate-on-scroll">
                         Onboard Now
                         <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -314,14 +391,14 @@
                         </svg>
                     </a>
                     <a href="./login/" target="_blank"
-                        class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center border rounded-lg focus:ring-0 text-white border-gray-700 hover:opacity-60 focus:ring-gray-800 transition duration-200 animate-on-scroll">
+                        class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-center border rounded-xl focus:ring-0 text-white border-gray-700 hover:bg-white/5 hover:border-gray-500 focus:ring-gray-800 transition duration-200 animate-on-scroll">
                         Client Area
                     </a>
                 </div>
                 <div class="col-span-6 animate-on-scroll-right">
 
                     <div
-                        class="relative mx-auto border-[#0f0f17] bg-[#0f0f17] border-[8px] rounded-t-xl h-[172px] max-w-[301px] md:h-[294px] md:max-w-[512px]">
+                        class="relative mx-auto border-[#1a1a26] bg-[#0f0f17] border-[8px] rounded-t-xl h-[172px] max-w-[301px] md:h-[294px] md:max-w-[512px] shadow-[0_0_80px_-20px_rgba(30,150,252,0.5)]">
                         <div class="rounded-lg overflow-hidden h-[156px] md:h-[278px]">
                             <img src="https://cdn.keyauth.cc/v2/dashboard-pic.png" class="h-[156px] md:h-[278px] w-full"
                                 alt="">
@@ -338,7 +415,7 @@
             </div>
             <div class="grid gap-8 sm:gap-12 md:grid-cols-3 pt-12 animate-on-scroll-in-up" id="features">
                 <div class="flex justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-3 text-blue-500 shrink-0"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-4 p-2 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 shrink-0"
                         fill="currentColor" viewBox="0 0 24 24">
                         <path fill="currentColor"
                             d="M14.2 14.5v.24c-.7.6-1.2 1.5-1.2 2.46V20H6.5c-1.5 0-2.81-.5-3.89-1.57C1.54 17.38 1 16.09 1 14.58c0-1.3.39-2.46 1.17-3.48S4 9.43 5.25 9.15c.42-1.53 1.25-2.77 2.5-3.72S10.42 4 12 4c1.95 0 3.6.68 4.96 2.04c1.12 1.12 1.77 2.46 1.97 3.96c-2.57.04-4.73 2.08-4.73 4.5m8.8 2.8v3.5c0 .6-.6 1.2-1.3 1.2h-5.5c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2v-1.5c0-1.4 1.4-2.5 2.8-2.5s2.8 1.1 2.8 2.5V16c.6 0 1.2.6 1.2 1.3m-2.5-2.8c0-.8-.7-1.3-1.5-1.3s-1.5.5-1.5 1.3V16h3v-1.5Z" />
@@ -354,7 +431,7 @@
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <svg class="w-6 h-6 mr-3 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                    <svg class="w-6 h-6 mr-4 p-2 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
                             d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
@@ -370,7 +447,7 @@
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <svg class="w-6 h-6 mr-3 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"
+                    <svg class="w-6 h-6 mr-4 p-2 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M2.165 19.551c.186.28.499.449.835.449h15c.4 0 .762-.238.919-.606l3-7A.998.998 0 0 0 21 11h-1V8c0-1.103-.897-2-2-2h-6.655L8.789 4H4c-1.103 0-2 .897-2 2v13h.007a1 1 0 0 0 .158.551ZM18 8v3H6c-.4 0-.762.238-.919.606L4 14.129V8h14Z">
@@ -422,7 +499,7 @@
                 </div>
                 <div class="w-full md:w-1/2 p-8">
                     <div class="flex flex-wrap justify-center -m-8 2xl:-m-16 pt-12">
-                        <div class="w-auto text-center p-4 md:mr-2">
+                        <div class="stat-card w-auto text-center p-4 md:mr-2">
                             <h3 class="mb-2.5 text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-sky-400"
                                 style="letter-spacing: -0.5px;" data-v="accountsCreated" id="accs">
                               0
@@ -431,7 +508,7 @@
                                 Accounts
                             </p>
                         </div>
-                        <div class="w-auto text-center p-4 md:mr-2">
+                        <div class="stat-card w-auto text-center p-4 md:mr-2">
                             <h3 class="mb-2.5 text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-sky-400"
                                 style="letter-spacing: -0.5px;" data-v="createdApps" id="apps">
                               0
@@ -440,7 +517,7 @@
                                 Applications
                             </p>
                         </div>
-                        <div class="w-auto text-center p-4 md:mr-2">
+                        <div class="stat-card w-auto text-center p-4 md:mr-2">
                             <h3 class="mb-2.5 text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-sky-400"
                                 style="letter-spacing: -0.5px;" data-v="licensesGenerated" id="licenses">
                                0
@@ -537,7 +614,7 @@
     <section id="plans">
         <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24">
             <div class="mx-auto max-w-screen-md text-center">
-                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-white">Pricing Options</h2>
+                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-white">Pricing <span class="shimmer-text">Options</span></h2>
                 <p class="font-light mb-12 text-gray-400 sm:text-xl">We offer a variety of plans to suit your
                     needs.</p>
 
@@ -554,7 +631,7 @@
             </div>
             <div class="flex flex-wrap -m-7">
                 <div class="w-full md:w-1/3 p-7 animate-on-scroll">
-                    <div class="h-full p-8 border border-[#0f0f17] rounded-xl bg-[#0f0f17]">
+                    <div class="glass-card h-full p-8 rounded-2xl">
                         <div class="flex flex-wrap justify-between border-b border-gray-800 pb-7 mb-7">
                             <div class="w-full xl:w-auto">
                                 <h3 class="font-bold text-2xl text-white">Tester</h3>
@@ -671,7 +748,7 @@
                         </ul>
 
                         <button type="button"
-                            class="text-white border-2 hover:bg-white hover:text-black focus:ring-0 focus:outline-none transition duration-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mb-3 w-full">
+                            class="text-white border-2 border-gray-600 hover:bg-white hover:text-black focus:ring-0 focus:outline-none transition duration-200 font-semibold rounded-xl text-sm px-5 py-2.5 text-center items-center mb-3 w-full hover:-translate-y-0.5">
                             <a href="./register/">
                                 <span class="inline-flex">Start for Free
                                     <svg class="w-3.5 h-3.5 ml-2 mt-0.5" aria-hidden="true"
@@ -687,7 +764,7 @@
                 </div>
 
                 <div class="w-full md:w-1/3 p-7 animate-on-scroll-in-up">
-                    <div class="h-full p-8 border border-[#0f0f17] rounded-xl bg-[#0f0f17]">
+                    <div class="glass-card h-full p-8 rounded-2xl">
                         <div class="flex flex-wrap justify-between border-b border-gray-800 pb-7 mb-7">
                             <div class="w-full xl:w-auto">
                                 <h3 class="font-bold text-2xl text-white">Developer</h3>
@@ -820,7 +897,7 @@
                 </div>
 
                 <div class="w-full md:w-1/3 p-7 animate-on-scroll-right">
-                    <div class="h-full p-8 border border-[#0f0f17] rounded-xl bg-[#0f0f17]">
+                    <div class="glass-card h-full p-8 rounded-2xl">
                         <div class="flex flex-wrap justify-between border-b border-gray-800 pb-7 mb-7">
                             <div class="w-full xl:w-auto">
                                 <h3 class="font-bold text-2xl text-white">Seller</h3>
@@ -953,7 +1030,7 @@
                 </div>
 
                 <div class="w-full p-7 animate-on-scroll-in-up">
-                    <div class="h-full p-8 border border-[#0f0f17] rounded-xl bg-[#0f0f17]">
+                    <div class="glass-card h-full p-8 rounded-2xl">
                         <div class="flex flex-wrap justify-between border-b border-gray-800 pb-7 mb-7">
                             <div class="w-full xl:w-auto">
                                 <h3 class="font-bold text-2xl text-white">Enterprise <span class="text-xs">(Source
@@ -1099,7 +1176,7 @@
             <div class="flex flex-wrap -m-8">
                 <div class="w-full md:w-1/3 p-8">
                     <div class="max-w-xs mx-auto text-center">
-                        <svg class="mx-auto mb-9 h-16 w-16" fill="currentColor" viewBox="0 0 24 24"
+                        <svg class="mx-auto mb-6 h-20 w-20 p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-400" fill="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M5.962 17.672C7 19.33 7 20.566 7 21.998h2c0-1.52 0-3.244-1.343-5.389l-1.695 1.063ZM16.504 3.386C13.977 1.909 7.55.925 4.281 4.304c-3.368 3.48-2.249 9.072.001 11.392.118.122.244.229.37.333.071.06.145.116.204.183l1.494-1.33c-.13-.14-.27-.27-.419-.39-.072-.06-.146-.12-.214-.189-1.66-1.71-2.506-6.016.001-8.607 2.525-2.611 8.068-1.58 9.777-.581 2.691 1.569 4.097 4.308 4.11 4.333l1.788-.895c-.065-.135-1.668-3.29-4.889-5.167Z">
@@ -1123,7 +1200,7 @@
                 </div>
                 <div class="w-full md:w-1/3 p-8">
                     <div class="max-w-xs mx-auto text-center">
-                        <svg class="mx-auto mb-9 h-16 w-16" fill="currentColor" viewBox="0 0 24 24"
+                        <svg class="mx-auto mb-6 h-20 w-20 p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-400" fill="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M4 7h11v2H4V7Zm0 4h11v2H4v-2Zm0 4h7v2H4v-2Zm15.299-2.708-4.3 4.291-1.292-1.291-1.414 1.415 2.706 2.704 5.712-5.703-1.412-1.416Z">
@@ -1141,7 +1218,7 @@
                 </div>
                 <div class="w-full md:w-1/3 p-8">
                     <div class="max-w-xs mx-auto text-center">
-                        <svg class="mx-auto mb-9 h-16 w-16" fill="currentColor" viewBox="0 0 24 24"
+                        <svg class="mx-auto mb-6 h-20 w-20 p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-400" fill="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M12 2C9.243 2 7 4.243 7 7v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7c0-2.757-2.243-5-5-5ZM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7Zm4 10.723V20h-2v-2.277a1.994 1.994 0 0 1 1.454-3.672 2 2 0 0 1 1.277 2.945 1.99 1.99 0 0 1-.731.727Z">
@@ -1175,7 +1252,7 @@
                 </div>
 
                 <div class="grid w-full grid-cols-1 gap-4 xl:max-w-3xl shrink-0 sm:grid-cols-2 md:grid-cols-3">
-                    <div class="relative overflow-hidden rounded-lg group">
+                    <div class="relative overflow-hidden rounded-xl group ring-1 ring-white/5 hover:ring-blue-500/50 transition duration-300">
                         <img class="object-cover w-full h-[320px] lg:h-auto scale-100 ease-in duration-300 group-hover:scale-125 opacity-60"
                             src="https://cdn.keyauth.cc/v3/imgs/networking.png" alt="">
                         <div
@@ -1191,7 +1268,7 @@
                         </div>
                     </div>
 
-                    <div class="relative overflow-hidden rounded-lg group">
+                    <div class="relative overflow-hidden rounded-xl group ring-1 ring-white/5 hover:ring-blue-500/50 transition duration-300">
                         <img class="object-cover w-full h-[320px] lg:h-auto scale-100 ease-in duration-300 group-hover:scale-125 opacity-60"
                             src="https://cdn.keyauth.cc/v3/imgs/shxde.png" alt="">
                         <div
@@ -1207,7 +1284,7 @@
                         </div>
                     </div>
 
-                    <div class="relative overflow-hidden rounded-lg group">
+                    <div class="relative overflow-hidden rounded-xl group ring-1 ring-white/5 hover:ring-blue-500/50 transition duration-300">
                         <img class="object-cover w-full h-[320px] lg:h-auto scale-100 ease-in duration-300 group-hover:scale-125 opacity-60"
                             src="https://cdn.keyauth.cc/v3/imgs/mazk.png" alt="">
                         <div
@@ -1238,7 +1315,7 @@
                 </p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="h-full p-8 border border-[#0f0f17] rounded-xl bg-[#0f0f17] animate-on-scroll">
+                <div class="glass-card h-full p-8 rounded-2xl animate-on-scroll">
                     <div class="flex flex-wrap justify-between border-b border-gray-800 pb-7 mb-7">
                         <div class="w-full xl:w-auto">
                             <div>
@@ -1286,12 +1363,12 @@
                     </div>
 
                     <button onclick='relocate("https://mazkdevf.it", "_blank")'
-                    class="text-white border-2 hover:bg-white hover:text-black focus:ring-0 focus:outline-none transition duration-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mb-3 w-full">
+                    class="text-white border-2 border-gray-600 hover:bg-white hover:text-black focus:ring-0 focus:outline-none transition duration-200 font-semibold rounded-xl text-sm px-5 py-2.5 text-center items-center mb-3 w-full hover:-translate-y-0.5">
                      Website
                     </button>
 
                 </div>
-                <div class="h-full p-8 border border-[#0f0f17] rounded-xl bg-[#0f0f17] animate-on-scroll-right">
+                <div class="glass-card h-full p-8 rounded-2xl animate-on-scroll-right">
                     <div class="flex flex-wrap justify-between border-b border-gray-800 pb-7 mb-7">
                         <div class="w-full xl:w-auto">
                             <div>
@@ -1338,7 +1415,7 @@
                     </div>
 
                     <button onclick='relocate("https://vaultcord.com", "_blank")'
-                    class="text-white border-2 hover:bg-white hover:text-black focus:ring-0 focus:outline-none transition duration-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center mb-3 w-full">
+                    class="text-white border-2 border-gray-600 hover:bg-white hover:text-black focus:ring-0 focus:outline-none transition duration-200 font-semibold rounded-xl text-sm px-5 py-2.5 text-center items-center mb-3 w-full hover:-translate-y-0.5">
                      Website
                     </button>
 
@@ -1468,7 +1545,7 @@
                             </a>
                         </li>
                         <li class="mb-4">
-                            <a target="_blank" href="./free-trial/" class="hover:underline">
+                            <a target="_blank" href="https://keyauth.cc/free-trial/" class="hover:underline">
                                 Demo Accounts
                             </a>
                         </li>
@@ -1535,6 +1612,9 @@
 
         $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function (event) { if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) { var target = $(this.hash); target = target.length ? target : $('[name=' + this.hash.slice(1) + ']'); if (target.length) { event.preventDefault(); $('html, body').animate({ scrollTop: target.offset().top }, 1000, function () { var $target = $(target); $target.focus(); if ($target.is(":focus")) { return false; } else { $target.attr('tabindex', '-1'); $target.focus(); }; }); } } });
     </script>
+
+    <div id="react-cta-root"></div>
+    <script type="module" src="/src/react/main.tsx"></script>
 </body>
 
 </html>

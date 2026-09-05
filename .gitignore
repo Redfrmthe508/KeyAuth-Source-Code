@@ -25,6 +25,16 @@ login/accShare/
 login/emailVerify/
 sitemap.xml
 includes/credentials.php
+
+# Node / Vite build artifacts
+node_modules/
+dist/
+
+# Preview server caches + demo data
+*.esbuild-cache
+*.out.js
+data/
+
 includes/redis.php
 app/pages/application-functions.php
 app/pages/application-prompts.php

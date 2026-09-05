@@ -54,8 +54,86 @@
             window.history.replaceState(null, null, window.location.href);
         }
     </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        /* Animated background glow orbs */
+        .glow-orb {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(110px);
+            opacity: 0.35;
+            pointer-events: none;
+            animation: orb-float 12s ease-in-out infinite;
+        }
+        @keyframes orb-float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -40px) scale(1.15); }
+        }
+
+        /* Subtle grid backdrop */
+        .grid-bg {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+        }
+
+        /* Glass cards */
+        .glass-card {
+            background: linear-gradient(160deg, rgba(23, 23, 33, 0.92), rgba(15, 15, 23, 0.88));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(30, 150, 252, 0.45);
+            box-shadow: 0 18px 45px -18px rgba(30, 150, 252, 0.35);
+        }
+
+        /* Gradient shimmer text */
+        .shimmer-text {
+            background: linear-gradient(90deg, #1e96fc, #36e2dd, #1e96fc);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+
+        /* Glowing primary button */
+        .btn-glow {
+            box-shadow: 0 0 0 0 rgba(30, 150, 252, 0.5);
+            transition: all .3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 28px 2px rgba(30, 150, 252, 0.45);
+            transform: translateY(-2px);
+        }
+
+        ::selection { background: rgba(30, 150, 252, 0.35); color: #fff; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #09090d; }
+        ::-webkit-scrollbar-thumb { background: #1f1f2b; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1e96fc; }
+    </style>
 </head>
 <body>
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="glow-orb w-[500px] h-[500px] bg-blue-600/40 -top-40 -left-40"></div>
+        <div class="glow-orb w-[400px] h-[400px] bg-cyan-500/25 top-1/3 -right-40" style="animation-delay: -6s"></div>
+        <div class="grid-bg absolute inset-0"></div>
+    </div>
+
     <header>
         <nav class="border-gray-200 px-4 lg:px-6 py-2.5 mb-14">
             <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
@@ -66,7 +144,7 @@
                     <a href="../login" class="text-white focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 hover:opacity-60 transition duration-200 focus:outline-none focus:ring-gray-800">
                         Client Area
                     </a>
-                    <a href="../register" class="text-white focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 bg-blue-600 hover:opacity-80 focus:outline-none focus:ring-blue-800 transition duration-200">
+                    <a href="../register" class="text-white focus:ring-0 font-medium rounded-lg text-sm px-4 py-2 lg:px-5 lg:py-2.5 mr-2 btn-glow bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 focus:outline-none focus:ring-blue-800 transition duration-200">
                         Onboard Now
                     </a>
                     <button data-collapse-toggle="mmenu" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200  " aria-controls="mmenu" aria-expanded="false">
@@ -115,7 +193,7 @@
             </a>
         </div>
         <div>
-            <div class="w-full lg:max-w-xl p-6 space-y-8 sm:p-8 bg-[#09090d] rounded-lg shadow-xl ">
+            <div class="glass-card w-full lg:max-w-xl p-6 space-y-8 sm:p-8 rounded-2xl shadow-xl">
                 <h2 class="text-2xl font-bold text-white-900 ">
                     Insert Security Key
                 </h2>
@@ -123,7 +201,7 @@
                     
                     <img class="h-auto max-w-xl rounded-lg shadow-xl  " width="500px" height="500px" src="https://cdn.keyauth.cc/v3/imgs/securityKey.png" alt="Security Key">
 
-                    <button type="button" onclick="checkregistration()" class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 sm:w-full mt-5">Continue</button>
+                    <button type="button" onclick="checkregistration()" class="btn-glow w-full px-5 py-3 text-base font-semibold text-center text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 rounded-xl sm:w-full mt-5 transition duration-200">Continue</button>
                 </form>
             </div>
         </div>
