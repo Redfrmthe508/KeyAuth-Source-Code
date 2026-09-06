@@ -1,41 +1,58 @@
-"""POST /api/login — verify credentials and start a session."""
-from flask import Flask, request
+"""POST /api/login — verify credentials. Pure-WSGI + Postgres (graceful)."""
+import os
 
 from _auth import (
+    SCHEMA,
     configured,
-    ensure_schema,
-    error_response,
     get_conn,
     hash_password,
-    issue_session,
-    json_response,
+    make_session_token,
+    not_configured_response,
+    read_json_body,
+    session_cookie_header,
+    wsgi_response,
 )
 
-app = Flask(__name__)
 
-
-@app.route("/", methods=["POST"])
-@app.route("/api/login", methods=["POST"])
-def login():
+def handler(environ, start_response):
+    if environ.get("REQUEST_METHOD") not in ("POST",):
+        return wsgi_response(start_response, {"success": False, "message": "Method not allowed."}, 405)
     if not configured():
-        return error_response(
-            "Auth service is being set up — please try again in a few minutes.", 503
-        )
-    data = request.get_json(silent=True) or {}
+        payload, status = not_configured_response()
+        return wsgi_response(start_response, payload, status)
+
+    data = read_json_body(environ)
     username = str(data.get("username", "")).strip()
     password = str(data.get("password", ""))
 
-    conn = get_conn()
+    try:
+        conn = get_conn()
+    except Exception:
+        return wsgi_response(start_response, {"success": False, "message": "Database unavailable — please try again shortly."}, 503)
+
     try:
         with conn.cursor() as cur:
-            ensure_schema(cur)
+            cur.execute(SCHEMA)
             cur.execute("SELECT salt, password_hash FROM users WHERE username = %s", (username,))
             row = cur.fetchone()
     finally:
         conn.close()
 
     if not row or hash_password(password, row[0]) != row[1]:
-        return error_response("Invalid username or password.", 401)
+        return wsgi_response(start_response, {"success": False, "message": "Invalid username or password."}, 401)
 
-    resp = json_response({"success": True, "message": "Logged in successfully!", "username": username})
-    return issue_session(resp, username)
+    token = make_session_token(username, os.environ["AUTH_SECRET"])
+    return wsgi_response(
+        start_response,
+        {"success": True, "message": "Logged in successfully!", "username": username},
+        200,
+        [session_cookie_header(token)],
+    )
+
+
+class _App:
+    def __call__(self, environ, start_response):
+        return handler(environ, start_response)
+
+
+app = _App()

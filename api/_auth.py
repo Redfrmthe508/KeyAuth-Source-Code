@@ -1,57 +1,68 @@
-"""Shared helpers for the auth serverless functions (Flask + Neon Postgres)."""
+"""Shared auth core for register/login — stdlib only, pure WSGI.
+
+Postgres access uses psycopg2 when available; if the driver or env vars
+are missing the endpoints return a clean 503 JSON instead of crashing.
+"""
+import base64
 import hashlib
+import hmac
+import json
 import os
+import secrets
 
-import psycopg2
-from flask import jsonify, request
-from itsdangerous import BadSignature, URLSafeSerializer
+COOKIE = "ka_session"
 
-_SERIALIZER = None
+try:
+    import psycopg2  # type: ignore
 
-
-def _serializer():
-    global _SERIALIZER
-    if _SERIALIZER is None:
-        secret = os.environ.get("AUTH_SECRET")
-        if not secret:
-            return None
-        _SERIALIZER = URLSafeSerializer(secret, salt="ka-auth-v1")
-    return _SERIALIZER
+    HAS_DB = True
+except Exception:  # driver not installed in the runtime image
+    psycopg2 = None
+    HAS_DB = False
 
 
 def configured():
-    return bool(os.environ.get("DATABASE_URL")) and bool(os.environ.get("AUTH_SECRET"))
+    return HAS_DB and bool(os.environ.get("DATABASE_URL")) and bool(os.environ.get("AUTH_SECRET"))
 
 
-def json_response(payload, status=200):
-    resp = jsonify(payload)
-    resp.status_code = status
-    resp.headers["Cache-Control"] = "no-store"
-    return resp
+STATUS_TEXT = {
+    200: "200 OK",
+    201: "201 Created",
+    400: "400 Bad Request",
+    401: "401 Unauthorized",
+    405: "405 Method Not Allowed",
+    409: "409 Conflict",
+    500: "500 Internal Server Error",
+    503: "503 Service Unavailable",
+}
 
 
-def error_response(message, status=400):
-    return json_response({"success": False, "message": message}, status)
+def wsgi_response(start_response, payload, status=200, extra_headers=None):
+    data = json.dumps(payload).encode()
+    headers = [
+        ("Content-Type", "application/json; charset=utf-8"),
+        ("Content-Length", str(len(data))),
+        ("Cache-Control", "no-store"),
+    ]
+    if extra_headers:
+        headers.extend(extra_headers)
+    start_response(STATUS_TEXT.get(status, f"{status} Status"), headers)
+    return [data]
 
 
-def get_conn():
-    return psycopg2.connect(os.environ["DATABASE_URL"], sslmode="require")
+def read_json_body(environ):
+    try:
+        length = int(environ.get("CONTENT_LENGTH") or 0)
+        return json.loads(environ["wsgi.input"].read(length) or b"{}")
+    except Exception:
+        return {}
 
 
-SCHEMA = """
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    username TEXT UNIQUE NOT NULL,
-    email TEXT NOT NULL,
-    salt TEXT NOT NULL,
-    password_hash TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-"""
-
-
-def ensure_schema(cur):
-    cur.execute(SCHEMA)
+def not_configured_response():
+    return (
+        {"success": False, "message": "Auth service is being set up — please try again in a few minutes."},
+        503,
+    )
 
 
 def hash_password(password, salt_hex):
@@ -60,36 +71,63 @@ def hash_password(password, salt_hex):
     ).hex()
 
 
-COOKIE = "ka_session"
+def get_conn():
+    return psycopg2.connect(os.environ["DATABASE_URL"], sslmode="require")
 
 
-def current_user():
-    token = request.cookies.get(COOKIE)
-    if not token:
+SCHEMA = (
+    "CREATE TABLE IF NOT EXISTS users ("
+    "id SERIAL PRIMARY KEY,"
+    "username TEXT UNIQUE NOT NULL,"
+    "email TEXT NOT NULL,"
+    "salt TEXT NOT NULL,"
+    "password_hash TEXT NOT NULL,"
+    "created_at TIMESTAMPTZ NOT NULL DEFAULT now())"
+)
+
+
+# ---------- signed session cookie (stdlib HMAC) ----------
+
+def _sign(value, secret):
+    return hmac.new(secret.encode(), value.encode(), hashlib.sha256).hexdigest()
+
+
+def make_session_token(username, secret):
+    payload = base64.urlsafe_b64encode(
+        json.dumps({"u": username}).encode()
+    ).decode().rstrip("=")
+    return f"{payload}.{_sign(payload, secret)}"
+
+
+def session_user(environ, secret=None):
+    secret = secret or os.environ.get("AUTH_SECRET")
+    if not secret:
         return None
-    ser = _serializer()
-    if not ser:
+    token = None
+    for part in environ.get("HTTP_COOKIE", "").split(";"):
+        if "=" in part:
+            k, v = part.strip().split("=", 1)
+            if k == COOKIE:
+                token = v
+                break
+    if not token or "." not in token:
         return None
+    payload_b64, sig = token.rsplit(".", 1)
     try:
-        data = ser.loads(token)
-    except BadSignature:
+        if not hmac.compare_digest(sig, _sign(payload_b64, secret)):
+            return None
+        data = json.loads(base64.urlsafe_b64decode(payload_b64 + "=="))
+        return data.get("u")
+    except Exception:
         return None
-    return data.get("u")
 
 
-def issue_session(resp, username):
-    ser = _serializer()
-    if not ser:
-        return resp
-    token = ser.dumps({"u": username})
-    resp.set_cookie(
-        COOKIE, token, httponly=True, samesite="Lax", secure=True,
-        path="/", max_age=60 * 60 * 24 * 7,
+def session_cookie_header(token):
+    return (
+        f"Set-Cookie: {COOKIE}={token}; Path=/; Max-Age=604800; "
+        "HttpOnly; SameSite=Lax; Secure"
     )
-    return resp
 
 
-def clear_session(resp):
-    resp.set_cookie(COOKIE, "", expires=0, path="/", httponly=True,
-                    samesite="Lax", secure=True)
-    return resp
+def clear_cookie_header():
+    return f"Set-Cookie: {COOKIE}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure"
