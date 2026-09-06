@@ -53,3 +53,5 @@ app/pages/reseller-users.php
 app/pages/seller-settings.php
 app/pages/seller-logs.php
 app/pages/webloader.php
+__pycache__/
+*.pyc
